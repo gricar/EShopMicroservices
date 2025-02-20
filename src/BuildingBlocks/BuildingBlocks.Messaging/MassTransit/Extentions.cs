@@ -1,0 +1,43 @@
+﻿using MassTransit;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+
+namespace BuildingBlocks.Messaging.MassTransit;
+
+public static class Extentions
+{
+    public static IServiceCollection AddMessageBroker
+        (this IServiceCollection services, IConfiguration configuration, Assembly? assembly = null)
+    {
+        services.AddMassTransit(config =>
+        {
+            config.SetKebabCaseEndpointNameFormatter();
+
+            if (assembly != null)
+            {
+                // automatically discover and register any consumer (in this case, for Ordering.API microservice)
+                config.AddConsumers(assembly);
+            }
+
+            config.UsingRabbitMq((context, configurator) =>
+            {
+                configurator.Host(new Uri(configuration["MessageBroker:Host"]!), host =>
+                {
+                    // TODO
+                    // setup Basket.API app.settings
+                    //"MessageBroker": {
+                    //    "Host": "amqp://localhost:5672",
+                    //    "UserName": "guest",
+                    //    "Password": "guest"
+                    //  },
+                    host.Username(configuration["MessageBroker:UserName"]);
+                    host.Password(configuration["MessageBroker:Password"]);
+                });
+                configurator.ConfigureEndpoints(context);
+            });
+        });
+
+        return services;
+    }
+}
