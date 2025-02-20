@@ -1,4 +1,5 @@
-﻿
+﻿using Basket.API.Data;
+
 namespace Basket.API.Basket.StoreBasket;
 
 public record StoreBasketCommand(ShoppingCart Cart) : ICommand<StoreBasketResult>;
@@ -14,15 +15,15 @@ public class StoreBasketCommandValidator : AbstractValidator<StoreBasketCommand>
     }
 }
 
-public class StoreBasketCommandHandler
+public class StoreBasketCommandHandler(IBasketRepository repository)
     : ICommandHandler<StoreBasketCommand, StoreBasketResult>
 {
     public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
         ShoppingCart cart = command.Cart;
 
-        //TODO: Database
+        await repository.StoreBasket(command.Cart, cancellationToken);
 
-        return new StoreBasketResult("tbd");
+        return new StoreBasketResult(command.Cart.UserName);
     }
 }
