@@ -22,8 +22,13 @@ builder.Services.AddMarten(opts =>
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
+//Cross-Cutting Services
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 var app = builder.Build();
 
 app.MapCarter();
+
+app.UseExceptionHandler(options => { });
 
 app.Run();
