@@ -7,6 +7,9 @@ services:
   basket.db:
     image: postgres
 
+  order.db:
+    image: mcr.microsoft.com/mssql/server
+
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:

@@ -1,0 +1,7 @@
+Add Migrations Steps:
+
+1) Set Ordering.API as a startup project
+2) Open Package Manager Console
+   2.1) Default Project: Ordering.Infrastructure
+   2.2) Add-Migration InitialCreate -OutputDir Data/Migrations -Project Ordering.Infrastructure -StartupProject Ordering.API
+   2.3) Update-Database
