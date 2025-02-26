@@ -24,13 +24,6 @@ public static class Extentions
             {
                 configurator.Host(new Uri(configuration["MessageBroker:Host"]!), host =>
                 {
-                    // TODO
-                    // setup Basket.API app.settings
-                    //"MessageBroker": {
-                    //    "Host": "amqp://localhost:5672",
-                    //    "UserName": "guest",
-                    //    "Password": "guest"
-                    //  },
                     host.Username(configuration["MessageBroker:UserName"]);
                     host.Password(configuration["MessageBroker:Password"]);
                 });
